@@ -124,6 +124,32 @@ class BST {
 		}
 		return Tree;
 	}
+	
+	public: TreeNode* next(TreeNode *&Tree, int x) {
+		TreeNode* current = Tree;
+		TreeNode* successor = NULL;
+		while (current != NULL) {
+			if (current->key > x) {
+				successor = current;
+				current = current->left;
+			} else
+				current = current->right;
+		}
+		return successor;
+	}
+	
+	public: TreeNode* prev(TreeNode *&Tree, int x) {
+		TreeNode* current = Tree;
+		TreeNode* successor = NULL;
+		while (current != NULL) {
+			if (current->key < x) {
+				successor = current;
+				current = current->left;
+			} else
+				current = current->right;
+		}
+		return successor;
+	}
 		
 	public: void treeMenu(TreeNode *&Tree) {
 		while(true) {
@@ -177,31 +203,34 @@ class BST {
 	}
 	
 	public: void iteratorMenu(TreeNode *&Tree) {
-		string command, help, currentVal = Tree->val;
+		string command, help;
 		int currentKey = Tree->key;
-		TreeNode* currentLeft = Tree->left;
-		TreeNode* currentRight = Tree->right;
 		
-		help = "root - установка на корень.\ninfo - информация об узле.\nmenu - вернуться в главное меню.\nhelp - показать эту справку.\n";
+		help = "root - установка на корень.\nend - проверка конца дерева.\ninfo - информация об элементе.\nnext - переход к следующему элементу.\nprev - переход к предыдущему элементу.\nmenu - вернуться в главное меню.\nhelp - показать эту справку.\n";
 		cout << help;
 		
 		while (true) {
 			cout << "<" << currentKey << ">: ";
 			cin >> command;
-			
-			if (command == "root") {
+						
+			if (command == "root")
 				currentKey = Tree->key;
-				currentVal = Tree->val;
-				currentLeft = Tree->left;
-				currentRight = Tree->right;
+			
+			if (command == "end") {
+				if ((Tree->left == NULL) && (Tree->right == NULL))
+					cout << "Конец дерева.\n";
+				else
+					cout << "Не конец дерева.\n";
 			}
 			
-			if (command == "info") {
+			if (command == "next")
+				currentKey = next(Tree, currentKey)->key;
+			
+			if (command == "prev")
+				currentKey = prev(Tree, currentKey)->key;
+			
+			if (command == "info")
 				showNode(currentKey, Tree);
-			}
-			
-			if (command == "help")
-				cout << help;
 					
 			if (command == "menu")
 				treeMenu(Tree);
