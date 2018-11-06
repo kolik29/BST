@@ -9,7 +9,7 @@ class BST {
 		TreeNode *left, *right; //левый, правый и родительский подузлы
 	};
 	
-	public: TreeNode* search(TreeNode *&node, int k) { //поиск
+	public: TreeNode* search(TreeNode *&node, int k) { //поиск элемента
 		if ((node == NULL) || (k == node->key))
 			return node;
 		
@@ -19,7 +19,7 @@ class BST {
 			return search(node->right, k);
 	}
 	
-	public: TreeNode* ins(TreeNode *&node, int k) { //вставка
+	public: TreeNode* ins(TreeNode *&node, int k) { //вставка элемента
 		if (node == NULL) {
 			node->key = k;
 			return node;
@@ -29,7 +29,7 @@ class BST {
 			node->right = ins(node->right, k);
 	}
 	
-	public: TreeNode* del(TreeNode *&node, int k) { //удаление
+	public: TreeNode* del(TreeNode *&node, int k) { //удаление элемента
 		if (node == NULL)
 			return node;
 		
@@ -49,29 +49,29 @@ class BST {
 		return node;
 	}
 	
-	public: TreeNode* min(TreeNode *&node) { //наименьшее
+	public: TreeNode* min(TreeNode *&node) { //наименьший элемент
 		if (node->left == NULL)
 			return node;
 		
 		return min(node->right);
 	}
 	
-	public: TreeNode* max(TreeNode *&node) { //наибольшее
+	public: TreeNode* max(TreeNode *&node) { //наибольший элемент
 		if (node->right == NULL)
 			return node;
 		
 		return max(node->right);
 	}
 	
-	public: int traversal(TreeNode *&node) {
+	public: void traversal(TreeNode *&node) { //обход дерева L->R->t
 		if (node != NULL) {
 			traversal(node->left);
 			traversal(node->right);
-			cout << node->key << " ";
+			cout << node->key << "\t";
 		}
 	}
 	
-	public: int count(TreeNode *&node) {
+	public: int count(TreeNode *&node) { //количество узлов в дереве
 		if ((node->left == NULL) && (node->right == NULL))
 			return 1;
 		
@@ -88,6 +88,22 @@ class BST {
 			right = 0;
 		
 		return right + left + 1;
+	}
+	
+	public: void clear(TreeNode *&node) { //очистка дерева
+		if (node != NULL) {
+			clear(node->left);
+			clear(node->right);
+			delete node;
+			node = NULL;
+		}
+	}
+	
+	public: bool empty(TreeNode *&node) { //проверка на пустоту
+		if (node == NULL)
+			return true;
+		else
+			return false;
 	}
 };
 
