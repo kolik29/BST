@@ -3,43 +3,46 @@
 #include <string>
 using namespace std;
 
-class BST {
-	public: struct TreeNode {
-		int key; //ключ узла дерева
-		TreeNode *left, *right; //левый, правый и родительский подузлы
-	};
+class TreeNode {
+	public: int key; //ключ узла дерева
+	public: TreeNode *left, *right; //левый, правый и родительский подузлы
+	public: string val; //значение элемента
+	public: TreeNode* ins();
+	static TreeNode* tree;
 	
-	public: TreeNode* search(TreeNode *&node, int k) { //поиск элемента
+	public: TreeNode* search(int k, TreeNode *&node = tree) { //поиск элемента
 		if ((node == NULL) || (k == node->key))
 			return node;
 		
 		if (k < node->key)
-			return search(node->left, k);
+			return search(k, node->left);
 		else
-			return search(node->right, k);
+			return search(k, node->right);
 	}
 	
-	public: TreeNode* ins(TreeNode *&node, int k) { //вставка элемента
+	public: TreeNode* ins(int k, string val, TreeNode *&node = tree) { //вставка элемента
 		if (node == NULL) {
 			node->key = k;
+			node->val = val;
 			return node;
 		} else if (k < node->key)
-			node->left = ins(node->left, k);
+			node->left = ins(k, val, node->left);
 		else if (k > node->key)
-			node->right = ins(node->right, k);
+			node->right = ins(k, val, node->right);
+		return NULL;
 	}
 	
-	public: TreeNode* del(TreeNode *&node, int k) { //удаление элемента
+	public: TreeNode* del(int k, TreeNode *&node = tree) { //удаление элемента
 		if (node == NULL)
 			return node;
 		
 		if (k < node->key) {
-			node->left = del(node->left, k);
+			node->left = del(k, node->left);
 		} else if (k > node->key) {
-			node->right = del(node->right, k);
+			node->right = del(k, node->right);
 		} else if ((node->left != NULL) && (node->right != NULL)) {
-			node->key = min(node->right)->key;
-			node->right = del(node->right, node->key);
+			node->key = begin(node->right)->key;
+			node->right = del(node->key, node->right);
 		} else {
 			if (node->left != NULL)
 				node = node->left;
@@ -49,21 +52,21 @@ class BST {
 		return node;
 	}
 	
-	public: TreeNode* min(TreeNode *&node) { //наименьший элемент
+	public: TreeNode* begin(TreeNode *&node = tree) { //наименьший элемент
 		if (node->left == NULL)
 			return node;
 		
-		return min(node->right);
+		return begin(node->right);
 	}
 	
-	public: TreeNode* max(TreeNode *&node) { //наибольший элемент
+	public: TreeNode* end(TreeNode *&node = tree) { //наибольший элемент
 		if (node->right == NULL)
 			return node;
 		
-		return max(node->right);
+		return end(node->right);
 	}
 	
-	public: void traversal(TreeNode *&node) { //обход дерева L->R->t
+	public: void traversal(TreeNode *&node = tree) { //обход дерева L->R->t
 		if (node != NULL) {
 			traversal(node->left);
 			traversal(node->right);
@@ -71,7 +74,7 @@ class BST {
 		}
 	}
 	
-	public: int count(TreeNode *&node) { //количество узлов в дереве
+	public: int count(TreeNode *&node = tree) { //количество узлов в дереве
 		if ((node->left == NULL) && (node->right == NULL))
 			return 1;
 		
@@ -90,23 +93,23 @@ class BST {
 		return right + left + 1;
 	}
 	
-	public: void clear(TreeNode *&node) { //очистка дерева
-		if (node != NULL) {
-			clear(node->left);
-			clear(node->right);
-			delete node;
-			node = NULL;
-		}
+	public: void clear() { //очистка дерева
+		delete tree;
+		tree = NULL;
 	}
 	
-	public: bool empty(TreeNode *&node) { //проверка на пустоту
-		if (node == NULL)
+	public: bool empty() { //проверка на пустоту
+		if (tree == NULL)
 			return true;
 		else
 			return false;
-	}
+	}	
 };
 
 int main() {
-    
+    TreeNode* treeNodes;
+	
+	for (int i = 0; i < 100; i++) {
+		treeNodes->ins(i, "sdfsd");
+	}
 }
