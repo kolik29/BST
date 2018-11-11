@@ -3,14 +3,14 @@
 #include <string>
 using namespace std;
 
-class TreeNode {
+struct TreeNode {
 	public: int key; //ключ узла дерева
 	public: TreeNode *left, *right; //левый, правый и родительский подузлы
 	public: string val; //значение элемента
 	public: TreeNode* ins();
-	static TreeNode* tree;
+	constexpr static TreeNode* tree = NULL;
 	
-	public: TreeNode* search(int k, TreeNode *&node = tree) { //поиск элемента
+	public: TreeNode* search(int k, TreeNode *node = tree) { //поиск элемента
 		if ((node == NULL) || (k == node->key))
 			return node;
 		
@@ -20,7 +20,7 @@ class TreeNode {
 			return search(k, node->right);
 	}
 	
-	public: TreeNode* ins(int k, string val, TreeNode *&node = tree) { //вставка элемента
+	public: TreeNode* ins(int k, string val, TreeNode *node = tree) { //вставка элемента
 		if (node == NULL) {
 			node->key = k;
 			node->val = val;
@@ -29,10 +29,11 @@ class TreeNode {
 			node->left = ins(k, val, node->left);
 		else if (k > node->key)
 			node->right = ins(k, val, node->right);
+		
 		return NULL;
 	}
 	
-	public: TreeNode* del(int k, TreeNode *&node = tree) { //удаление элемента
+	public: TreeNode* del(int k, TreeNode *node = tree) { //удаление элемента
 		if (node == NULL)
 			return node;
 		
@@ -52,21 +53,21 @@ class TreeNode {
 		return node;
 	}
 	
-	public: TreeNode* begin(TreeNode *&node = tree) { //наименьший элемент
+	public: TreeNode* begin(TreeNode *node = tree) { //наименьший элемент
 		if (node->left == NULL)
 			return node;
 		
 		return begin(node->right);
 	}
 	
-	public: TreeNode* end(TreeNode *&node = tree) { //наибольший элемент
+	public: TreeNode* end(TreeNode *node = tree) { //наибольший элемент
 		if (node->right == NULL)
 			return node;
 		
 		return end(node->right);
 	}
 	
-	public: void traversal(TreeNode *&node = tree) { //обход дерева L->R->t
+	public: void traversal(TreeNode *node = tree) { //обход дерева L->R->t
 		if (node != NULL) {
 			traversal(node->left);
 			traversal(node->right);
@@ -74,7 +75,7 @@ class TreeNode {
 		}
 	}
 	
-	public: int count(TreeNode *&node = tree) { //количество узлов в дереве
+	public: int count(TreeNode *node = tree) { //количество узлов в дереве
 		if ((node->left == NULL) && (node->right == NULL))
 			return 1;
 		
@@ -95,7 +96,6 @@ class TreeNode {
 	
 	public: void clear() { //очистка дерева
 		delete tree;
-		tree = NULL;
 	}
 	
 	public: bool empty() { //проверка на пустоту
@@ -107,7 +107,7 @@ class TreeNode {
 };
 
 int main() {
-    TreeNode* treeNodes;
+    TreeNode* treeNodes = NULL;
 	
 	for (int i = 0; i < 100; i++) {
 		treeNodes->ins(i, "sdfsd");
